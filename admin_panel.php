@@ -60,11 +60,20 @@ $usuario = $_SESSION['usuario'];
 
                 <div class="col-md-4">
                     <div class="card shadow-sm border-0 h-100 text-center p-3">
-                        <div class="card-body">
-                            <i class="bi bi-tags fs-1 text-success mb-2"></i>
-                            <h6 class="fw-bold">Productos y Categorías</h6>
-                            <p class="x-small text-muted mb-3">Control de stock, precios y organización por categorías.</p>
-                            <a href="gestionar_articulos.php" class="btn btn-outline-success btn-sm w-100">Gestionar</a>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <i class="bi bi-tags fs-1 text-success mb-2"></i>
+                                <h6 class="fw-bold">Productos y Categorías</h6>
+                                <p class="x-small text-muted mb-3">Control de stock, precios y organización de familias.</p>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a href="gestionar_articulos.php" class="btn btn-outline-success btn-sm">
+                                    <i class="bi bi-box-seam me-1"></i> Ver Productos
+                                </a>
+                                <a href="gestionar_categorias.php" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-bookmark-plus me-1"></i> Crear Categorías
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

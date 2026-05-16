@@ -27,16 +27,56 @@ $articulos = $stmt->fetchAll(PDO::FETCH_CLASS, 'Articulo');
 
 
 
+<?php
+
+if (function_exists('conectar') && !isset($pdo)) {
+    $pdo = conectar();
+}
+
+
+$categorias_nav = [];
+if (isset($pdo)) {
+    try {
+        $consulta_bar = $pdo->query("SELECT codigo, nombre FROM categorias WHERE activo = 1 ORDER BY nombre ASC");
+        $categorias_nav = $consulta_bar->fetchAll();
+    } catch (PDOException $e) {
+        $categorias_nav = []; // Evitamos colgar la página si falla la BD
+    }
+}
+
+
+$iconos_categorias = [
+    1 => 'bi-cpu',                  // Electrónica
+    2 => 'bi-controller',           // Ocio
+    3 => 'bi-handbag',              // Moda y Accesorios
+    4 => 'bi-trophy',               // Deporte
+    5 => 'bi-music-note-beamed',    // Música e Instrumentos / Cine
+    6 => 'bi-plug'                  // Electrodomésticos
+];
+?>
+
 <nav class="category-bar">
     <div class="container">
         <ul class="nav justify-content-center">
-            <li class="nav-item"><a class="nav-link category-link" href="categorias.php?codigo=1"><i class="bi bi-cpu me-1"></i> Electrónica</a></li>
-            <li class="nav-item"><a class="nav-link category-link" href="categorias.php?codigo=6"><i class="bi bi-plug me-1"></i> Electrodomésticos</a></li>
-            <li class="nav-item"><a class="nav-link category-link" href="categorias.php?codigo=3"><i class="bi bi-handbag me-1"></i> Moda y Accesorios</a></li>
-            <li class="nav-item"><a class="nav-link category-link" href="categorias.php?codigo=5"><i class="bi bi-music-note-beamed me-1"></i> Música y Cine</a></li>
-            <li class="nav-item"><a class="nav-link category-link" href="categorias.php?codigo=4"><i class="bi bi-trophy me-1"></i> Deporte</a></li>
-            <li class="nav-item"><a class="nav-link category-link" href="categorias.php?codigo=2"><i class="bi bi-controller me-1"></i> Ocio</a></li>
-            <li class="nav-item"><a class="nav-link category-link text-danger" href="outlets.php"><i class="bi bi-percent me-1"></i> Ofertas</a></li>
+            <?php if (!empty($categorias_nav)): ?>
+                <?php foreach ($categorias_nav as $cat): 
+                    // Si el código existe en nuestro diccionario usa su icono, si no, le pone una etiqueta genérica
+                    $id_cat = $cat['codigo'];
+                    $icono = isset($iconos_categorias[$id_cat]) ? $iconos_categorias[$id_cat] : 'bi-tag';
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link category-link" href="categorias.php?codigo=<?= $cat['codigo'] ?>">
+                            <i class="bi <?= $icono ?> me-1"></i> <?= htmlspecialchars($cat['nombre']) ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            
+            <li class="nav-item">
+                <a class="nav-link category-link text-danger" href="outlets.php">
+                    <i class="bi bi-percent me-1"></i> Ofertas
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

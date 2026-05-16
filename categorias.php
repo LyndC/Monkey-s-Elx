@@ -1,6 +1,6 @@
 <?php
 require_once 'conectar_db.php';
-require_once 'layouts/header.php';
+
 
 $pdo = conectar();
 $idCategoria = $_GET['codigo'] ?? null;
@@ -15,13 +15,21 @@ if ($esOferta) {
 } else {
     $sql = "SELECT * FROM articulos WHERE categoria = ? AND activo = 1";
     $params = [$idCategoria];
+
+    //catgorias dinamica que faltaban 
+    $sqlcat = "SELECT nombre FROM categorias WHERE codigo = ? and activo = 1";
+    $stmtcat = $pdo->prepare($sqlcat);
+    $stmtcat ->execute([$idCategoria]);
+    $categoria = $stmtcat->fetch(PDO::FETCH_ASSOC);
     // Opcional: Obtener el nombre de la categoría para el título
-    $titulo = "Productos de la categoría"; 
+    $titulo = $categoria ? $categoria['nombre'] : "Productos de la Categoría";
 }
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $articulos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+require_once 'layouts/header.php';  
 ?>
 
 <div class="container mt-5">

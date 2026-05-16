@@ -119,8 +119,14 @@ require_once 'layouts/header.php';
                         <input type="text" name="provincia" class="form-control shadow-sm" required>
                     </div>
                     <div class="col-12">
-                        <label class="form-label small fw-bold">Teléfono </label>
-                        <input type="text" name="telefono" class="form-control shadow-sm" required>
+                        <label class="form-label small fw-bold">Teléfono</label>
+                        <input type="tel" 
+                        name="telefono" 
+                        class="form-control shadow-sm" 
+                        pattern="[0-9]{9,15}" 
+                        maxlength="15" 
+                        required 
+                        title="El teléfono debe contener solo números (entre 9 y 15 dígitos, sin letras ni espacios)">
                     </div>
                     <div class="col-12">
                         <label class="form-label small fw-bold">Email</label>
